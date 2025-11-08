@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Data Pendaftaran</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
+    body{background:#f8fafc;color:#1e293b;min-height:100vh;display:flex;flex-direction:column}
+    header{background:#1B7548;color:#fff;text-align:center;padding:16px 0;box-shadow:0 2px 8px rgba(0,0,0,0.15);animation:slideDown .8s ease}
+    header h1{font-size:22px;font-weight:700}
+    main{flex:1;max-width:1000px;width:95%;margin:30px auto;background:#fff;padding:24px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,0.08);animation:fadeIn 1s ease}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{text-align:left;padding:10px;border-bottom:1px solid #e2e8f0;font-size:14px}
+    th{background:#1B7548;color:#fff}
+    tr:hover{background:#f1f5f9}
+    #refresh{background:#1B7548;color:#fff;border:0;border-radius:8px;padding:8px 16px;cursor:pointer;font-weight:600;margin-bottom:10px;transition:.3s}
+    #refresh:hover{background:#145c38;transform:translateY(-2px)}
+    footer{text-align:center;padding:10px;color:#64748b;font-size:13px;margin-top:auto}
+    @keyframes slideDown {from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn {from{opacity:0}to{opacity:1}}
+    @media(max-width:700px){
+      table{font-size:12px}
+      th,td{padding:6px}
+      main{padding:16px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📋 Data Pendaftaran Anggota PAGARNUSA UNUSIA</h1>
+  </header>
+
+  <main>
+    <button id="refresh">🔄 Muat Ulang Data</button>
+    <div style="overflow-x:auto;">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Waktu</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>WhatsApp</th>
+            <th>NIM/NIS</th>
+            <th>Tempat</th>
+            <th>Tanggal Lahir</th>
+            <th>Jenis Kelamin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="9" style="text-align:center;color:#64748b;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 PAGARNUSA UNUSIA — Dashboard Admin
+  </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzkq10bfYMyTT3aVtXRzw16Jn8-agn1DcL3rHJmkqGGJwhwyUCncEelzNXbrlOAKnUtLw/exec'; 
+    const tableBody = document.querySelector('#dataTable tbody');
+    const refreshBtn = document.getElementById('refresh');
+
+    async function loadData() {
+      tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#64748b;">⏳ Memuat data...</td></tr>`;
+      try {
+        const res = await fetch(scriptURL);
+        const data = await res.json();
+        if (!Array.isArray(data) || !data.length) {
+          tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:#64748b;">Belum ada data pendaftaran.</td></tr>`;
+          return;
+        }
+        tableBody.innerHTML = data.map((d, i) => `
+          <tr>
+            <td>${i+1}</td>
+            <td>${new Date(d.waktu).toLocaleString('id-ID')}</td>
+            <td>${d.nama}</td>
+            <td>${d.email}</td>
+            <td>${d.wa}</td>
+            <td>${d.nim}</td>
+            <td>${d.tempat}</td>
+            <td>${d.tanggal}</td>
+            <td>${d.jk}</td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align:center;color:red;">❌ Gagal memuat data.</td></tr>`;
+      }
+    }
+
+    refreshBtn.addEventListener('click', loadData);
+    loadData();
+  </script>
+</body>
+</html>
