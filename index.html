@@ -1,65 +1,207 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Formulir Pendaftaran Anggota</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0;font-family:"Poppins",sans-serif}
-    body{background:linear-gradient(135deg,#d7f5e9,#f8fafc);color:#1e293b;min-height:100vh;display:flex;flex-direction:column;animation:fadeIn 1s ease}
-    header,footer{background:#1B7548;color:#fff;text-align:center;padding:16px 0;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
-    header img{height:60px;margin-bottom:8px;animation:float 3s infinite ease-in-out}
-    main{max-width:700px;width:90%;margin:30px auto;background:#fff;padding:28px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,0.08);animation:zoomIn .6s ease}
-    h1{text-align:center;color:#1B7548;margin-bottom:10px;font-weight:700}
-    p.desc{text-align:center;margin-bottom:20px;color:#64748b}
-    label{display:block;margin-top:10px;margin-bottom:4px;font-weight:600;font-size:14px}
-    input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;transition:all .3s}
-    input:focus,select:focus{border-color:#1B7548;box-shadow:0 0 6px #1B754855;outline:none}
-    button{margin-top:20px;width:100%;padding:12px;background:#1B7548;color:#fff;border:0;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;transition:all .3s}
-    button:hover{background:#145c38;transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,0.15)}
-    footer p{font-size:13px}
-    .field-group{display:flex;gap:10px;flex-wrap:wrap}
-    .field-group>div{flex:1;min-width:45%}
-    .popup {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      padding: 24px;
-      text-align: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all .3s ease;
-      z-index: 1000;
+    :root{
+      /* ===== TEMA DEFAULT (NETRAL) ===== */
+      --primary:#1B7548;
+      --primary-dark:#145c38;
+      --bg:#f1f5f9;
+      --card-bg:#ffffff;
+      --text:#1e293b;
+      --muted:#64748b;
+      --border:#cbd5e1;
+      --radius:12px;
+      --blur:14px;
     }
-    .popup.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, -50%) scale(1);
+
+    /* ===== TEMA FORMAL / INSTANSI ===== */
+    body.formal{
+      background:#eef2f7;
     }
-    .popup h3 {color:#1B7548;margin-bottom:8px}
-    .popup p {color:#475569;font-size:14px}
-    .popup button {
-      margin-top:16px;
-      background:#1B7548;
+    body.formal header,
+    body.formal footer{
+      background:#0f5132;
+    }
+    body.formal #form-section,
+    body.formal .success-message{
+      border:1px solid #e2e8f0;
+      box-shadow:0 6px 16px rgba(0,0,0,.05);
+    }
+
+    /* ===== TEMA MODERN (GLASSMORPHISM) ===== */
+    body.glass{
+      background:linear-gradient(135deg,#c7f0df,#eef2ff);
+    }
+    body.glass #form-section,
+    body.glass .success-message{
+      background:rgba(255,255,255,.65);
+      backdrop-filter:blur(var(--blur));
+      -webkit-backdrop-filter:blur(var(--blur));
+      border:1px solid rgba(255,255,255,.4);
+      box-shadow:0 20px 40px rgba(0,0,0,.08);
+    }
+
+    /* ===== DARK MODE (AUTO) ===== */
+    @media (prefers-color-scheme: dark){
+      body{
+        background:linear-gradient(180deg,#020617,#020617);
+        color:#e5e7eb;
+      }
+      header,footer{
+        background:#020617;
+      }
+      #form-section,
+      .success-message{
+        background:#020617;
+        border:1px solid #1e293b;
+        box-shadow:none;
+      }
+      input,select{
+        background:#020617;
+        border-color:#334155;
+        color:#e5e7eb;
+      }
+      input::placeholder{color:#94a3b8}
+      p.desc,.success-message p{color:#cbd5e1}
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+
+    body{
+      background:linear-gradient(180deg,#e6f4ee,#f8fafc);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    header,footer{
+      background:var(--primary);
       color:#fff;
-      border:none;
-      border-radius:6px;
-      padding:8px 16px;
-      cursor:pointer;
-      transition:0.3s;
+      text-align:center;
+      padding:16px;
     }
-    .popup button:hover {background:#145c38;}
-    @keyframes fadeIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes zoomIn {from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-    @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    @media(max-width:600px){
-      main{padding:20px}
-      h1{font-size:20px}
-      header img{height:50px}
+
+    header img{
+      height:52px;
+      margin-bottom:6px;
+    }
+
+    header h2{
+      font-size:16px;
+      font-weight:600;
+      letter-spacing:.5px;
+    }
+
+    main{
+      width:100%;
+      max-width:720px;
+      margin:24px auto;
+      padding:0 14px;
+      flex:1;
+    }
+
+    #form-section,
+    .success-message{
+      background:#fff;
+      padding:22px 18px;
+      border-radius:var(--radius);
+      box-shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+
+    h1{
+      text-align:center;
+      font-size:20px;
+      color:var(--primary);
+      margin-bottom:6px;
+    }
+
+    p.desc{
+      text-align:center;
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      margin:12px 0 6px;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    input,select{
+      width:100%;
+      padding:12px 12px;
+      font-size:14px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      transition:.25s;
+    }
+
+    input::placeholder{color:#94a3b8}
+
+    input:focus,select:focus{
+      outline:none;
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(27,117,72,.15);
+    }
+
+    a{
+      font-size:13px;
+      color:var(--primary);
+      text-decoration:underline;
+    }
+
+    button{
+      width:100%;
+      margin-top:22px;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:var(--primary);
+      color:#fff;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.25s;
+    }
+
+    button:hover{
+      background:var(--primary-dark);
+    }
+
+    footer p{
+      font-size:12px;
+      opacity:.9;
+    }
+
+    /* SUCCESS */
+    .success-message{display:none;text-align:center}
+    .success-message.active{display:block}
+
+    .success-message h2{
+      font-size:20px;
+      color:var(--primary);
+      margin-bottom:10px;
+    }
+
+    .success-message p{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
+    /* RESPONSIVE */
+    @media(min-width:640px){
+      #form-section,.success-message{padding:28px}
+      h1{font-size:22px}
     }
   </style>
 </head>
@@ -70,73 +212,84 @@
   </header>
 
   <main>
-    <h1>Formulir Pendaftaran Anggota</h1>
-    <p class="desc">Silakan isi data diri Anda dengan lengkap dan benar.</p>
+    <div id="form-section">
+      <h1>Formulir Pendaftaran Anggota</h1>
+      <p class="desc">Silakan isi data berikut dengan benar dan lengkap.</p>
 
-    <!-- GANTI action dengan URL Web App kamu -->
-    <form id="formData" action="https://script.google.com/macros/s/AKfycbzip_2fv8MPwU7Sc0pW4FnK5y71bPpIJCLnNNWRUGCZmgiWb24pyyqU58hapb7dXh9_yg/exec" method="POST">
-      <label for="nama">Nama Lengkap *</label>
-      <input type="text" id="nama" name="nama" required>
+      <form id="formData" action="https://script.google.com/macros/s/AKfycbwRHJqMkBL1gOkszKsyjrKtnYmEr0Rp8Iw_B8bfOeBy3E_azdd14A9mNIz8NaX15e9Qcw/exec" method="POST">
+        <label>Nama *</label>
+        <input type="text" name="nama" placeholder="Nama Lengkap" required>
 
-      <label for="email">Email *</label>
-      <input type="email" id="email" name="email" required>
+        <label>Email *</label>
+        <input type="email" name="email" placeholder="nama@email.com" required>
 
-      <label for="no_wa">No. WhatsApp *</label>
-      <input type="tel" id="no_wa" name="no_wa" placeholder="08xxxxxxxxxx" required>
+        <label>Tempat dan Tanggal Lahir *</label>
+        <input type="text" name="ttl" placeholder="Jakarta, 01 Januari 2026" required>
 
-      <label for="nim">NIM *</label>
-      <input type="text" id="nim" name="nim" required>
+        <label>Alamat *</label>
+        <input type="text" name="alamat" placeholder="Bogor, Jawa Barat" required>
 
-      <div class="field-group">
-        <div>
-          <label for="tempat_lahir">Tempat Lahir *</label>
-          <input type="text" id="tempat_lahir" name="tempat_lahir" required>
-        </div>
-        <div>
-          <label for="tgl_lahir">Tanggal Lahir *</label>
-          <input type="date" id="tgl_lahir" name="tgl_lahir" required>
-        </div>
-      </div>
+        <label>Nomor WhatsApp *</label>
+        <input type="tel" name="whatsapp" placeholder="08xxxxxxxxxx" pattern="08[0-9]{8,11}" required>
 
-      <label for="jenis_kelamin">Jenis Kelamin *</label>
-      <select id="jenis_kelamin" name="jenis_kelamin" required>
-        <option value="">-- Pilih --</option>
-        <option value="Laki-Laki">Laki-Laki</option>
-        <option value="Perempuan">Perempuan</option>
-      </select>
+        <label>Angkatan *</label>
+        <select name="angkatan" required>
+          <option value="">-- Pilih Angkatan --</option>
+          <option>2022</option>
+          <option>2023</option>
+          <option>2024</option>
+          <option>2025</option>
+        </select>
 
-      <button type="submit">Kirim Pendaftaran</button>
-    </form>
+        <label>Ujian yang Diikuti *</label>
+        <select name="ujian" required>
+          <option value="">-- Pilih Ujian --</option>
+          <option>Putih</option>
+          <option>Kuning</option>
+          <option>Merah</option>
+        </select>
+
+        <label>Link Sertifikat (jika sudah UKT sebelumnya)</label>
+        <label>Klik link dibawah > Upload Sertifikat > Ubah nama file ke Nama Lengkap > Salin Link > Isi Link Dibawah ini</label>
+        <a href="https://drive.google.com/drive/folders/12ijbVqbuR9A7ffhKK6ut5n_pIt-UHHmZ?usp=sharing" target="_blank">Upload Disini</a>
+        <input type="url" name="link_sertifikat" placeholder="https://drive.google.com/...">
+
+        <button type="submit">Kirim Pendaftaran</button>
+      </form>
+    </div>
+
+    <div id="success-section" class="success-message">
+      <h2>✅ Pendaftaran Berhasil</h2>
+      <p>Terima kasih, data Anda berhasil dikirim.</p>
+      <a href="https://chat.whatsapp.com/FRcfpT5vH536nGg0nBOC9w" target="_blank">Join Ke Group. Agar Tidak Ketinggalan Informasi</a>
+      <button onclick="resetForm()">Kirim Data Lagi</button>
+    </div>
   </main>
 
   <footer>
     <p>© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
   </footer>
 
-  <div id="popup" class="popup">
-    <h3>✅ Data Berhasil Dikirim</h3>
-    <p>Terima kasih, data Anda sudah tersimpan di sistem.</p>
-    <button onclick="closePopup()">Tutup</button>
-  </div>
-
   <script>
-    const form = document.getElementById('formData');
-    const popup = document.getElementById('popup');
+    const form=document.getElementById('formData');
+    const formSection=document.getElementById('form-section');
+    const successSection=document.getElementById('success-section');
 
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit',e=>{
       e.preventDefault();
-      const data = new FormData(form);
-
-      fetch(form.action, { method: 'POST', body: data })
-        .then(() => {
+      const data=new FormData(form);
+      fetch(form.action,{method:'POST',body:data})
+        .then(()=>{
+          formSection.style.display='none';
+          successSection.classList.add('active');
           form.reset();
-          popup.classList.add('active');
         })
-        .catch(() => alert('❌ Gagal mengirim data. Periksa koneksi Anda.'));
+        .catch(()=>alert('Gagal mengirim data.'));
     });
 
-    function closePopup() {
-      popup.classList.remove('active');
+    function resetForm(){
+      successSection.classList.remove('active');
+      formSection.style.display='block';
     }
   </script>
 </body>
