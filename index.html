@@ -88,8 +88,9 @@
     }
 
     header img{
-      height:52px;
-      margin-bottom:6px;
+      height:70px;
+      margin-bottom:1px;
+      margin-top:4px;
     }
 
     header h2{
@@ -208,12 +209,12 @@
 <body>
   <header>
     <img src="logopn.png" alt="Logo PAGARNUSA">
-    <h2>PAGARNUSA UNUSIA</h2>
+    <h2>PAGARNUSA<br>UNUSIA</h2>
   </header>
 
   <main>
     <div id="form-section">
-      <h1>Daftar Peserta UKT</h1>
+      <h1>Pendaftaran Peserta</h1>
       <p class="desc">Silakan isi data berikut dengan benar dan lengkap.</p>
 
       <form id="formData" action="https://script.google.com/macros/s/AKfycbyCrP0iYfrjSY_PpKfyLExdMUgjeZWrvCbjQhv1qfZXigtaCYNVr7AuwLm7cRaPR5YjrQ/exec" method="POST">
@@ -250,7 +251,7 @@
         </select>
 
         <label>Link Sertifikat (jika sudah UKT sebelumnya)</label>
-        <label>Klik link dibawah > Upload Sertifikat > Ubah nama file ke Nama Lengkap > Salin Link > Isi Link Dibawah ini</label>
+        <label>Klik link dibawah > Upload Sertifikat > Ubah nama file ke Nama Lengkap > Salin Link File > Paste Link Dikolom Bawah ini.</label>
         <a href="https://drive.google.com/drive/folders/12ijbVqbuR9A7ffhKK6ut5n_pIt-UHHmZ?usp=sharing" target="_blank">Upload Disini</a>
         <input type="url" name="link_sertifikat" placeholder="https://drive.google.com/...">
 
@@ -260,8 +261,8 @@
 
     <div id="success-section" class="success-message">
       <h2>✅ Pendaftaran Berhasil</h2>
-      <p>Terima kasih, data Anda berhasil dikirim.</p>
-      <a href="https://chat.whatsapp.com/FRcfpT5vH536nGg0nBOC9w" target="_blank">Join Ke Group. Agar Tidak Ketinggalan Informasi</a>
+      <p>Untuk informasi selanjutnya, silahkan bergabung ke group dibawah ini:.</p>
+      <a href="https://chat.whatsapp.com/FRcfpT5vH536nGg0nBOC9w" target="_blank">Klik Disini. untuk bergabung</a>
       <button onclick="resetForm()">Kirim Data Lagi</button>
     </div>
   </main>
@@ -294,5 +295,4 @@
   </script>
 </body>
 </html>
-
 
